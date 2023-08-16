@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.urls import path,include
 
-from .views import MediViewSet,ScrapListView,ScrapCreateView,ScrapViewSet
+from .views import MediViewSet,ScrapListView,ScrapCreateView,ScrapViewSet,ScrapRetrieveView
 
 from rest_framework import routers
 
@@ -30,5 +30,6 @@ app_name = 'posts'
 urlpatterns = [
     path('',include(router.urls)),
     path('<int:pk>/scrap-create/',ScrapCreateView.as_view()),
+    path('scrap/<int:pk>/',ScrapRetrieveView.as_view()),
     path('scrap/',ScrapListView.as_view()),
 ]

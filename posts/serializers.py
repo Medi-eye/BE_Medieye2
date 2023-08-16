@@ -21,10 +21,10 @@ class ScrapSerializer(ModelSerializer):
         fields = '__all__'
 
 # 즐겨찾기 약물 리스트 시리얼라이저
-class MediScrapListSerializer(ScrapSerializer):
+# class MediScrapSerializer(ScrapSerializer):
 
-    class Meta(ScrapSerializer.Meta):
-        object = Scrap
-        fields = [
-            'medicine', 'user',
-        ]
+#     class Meta(ScrapSerializer.Meta):
+#         object = Scrap
+#         fields = [
+#             'medicine', 'user',
+#         ]
