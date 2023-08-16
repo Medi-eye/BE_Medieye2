@@ -16,21 +16,19 @@ Including another URLconf
 """
 from django.urls import path,include
 
-from .views import PostDetailView,ScarpView,ScrapPostView
+from .views import MediViewSet,ScrapListView,ScrapCreateView,ScrapViewSet
 
 from rest_framework import routers
 
 router = routers.SimpleRouter()
-router.register(r'scrap', ScarpView)
-
-
-
+router.register(r'', MediViewSet)
+router.register(r'Scrap',ScrapViewSet)
 
 
 app_name = 'posts'
 
 urlpatterns = [
-    path('<int:pk>/',PostDetailView.as_view()),
     path('',include(router.urls)),
-    path('scrap/posts/',ScrapPostView.as_view()),
+    path('<int:pk>/scrap-create/',ScrapCreateView.as_view()),
+    path('scrap/',ScrapListView.as_view()),
 ]

@@ -20,19 +20,11 @@ class ScrapSerializer(ModelSerializer):
         model = Scrap
         fields = '__all__'
 
-    def create(self, validated_data):
-        scrap = Scrap.objects.create(**validated_data)
-        scrap.user = self.context['request'].user
-        scrap.save()
-        return scrap
-    
-
+# 즐겨찾기 약물 리스트 시리얼라이저
 class MediScrapListSerializer(ScrapSerializer):
-    posts = SerializerMethodField()
-
-# obj = scrap(self.request.user)
-    def get_medicines(self, obj):
-        return MedicineSerializer(obj,many=True).data
 
     class Meta(ScrapSerializer.Meta):
-        fields = ['posts']
+        object = Scrap
+        fields = [
+            'medicine', 'user',
+        ]
