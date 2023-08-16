@@ -67,7 +67,6 @@ class Allergy(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True, related_name='allergy')
     name = models.CharField(verbose_name='allergy_name',max_length=15)
 
-
 class UserTakenMedi(models.Model):
     user = models.ForeignKey(
         to = User,
