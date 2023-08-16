@@ -11,8 +11,8 @@ from django.http import Http404
 # Create your views here.
 
 
-from .serializers import PostDetailSerializer,ScrapSerializer,ScrapPostListSerializer
-from .models import Post,Scrap
+from .serializers import MedicineSerializer,ScrapSerializer,MediScrapListSerializer
+from .models import Medicine,Scrap
 
 
 def AI_filter():
@@ -27,48 +27,53 @@ def medi_selenium():
     '''
     pass
 
-class PostDetailView(APIView):
-    permission_classes = [AllowAny]
-    medi_name = ''
-    # 이미지 post
-    def post(self, request, *args, **kwargs):
-        self.medi_name = AI_filter(request.FILES['image'])
-        if self.medi_name != '':
-            return Response({'message':'find success'}, status=status.HTTP_200_OK)
-        else:
-            raise Http404
+# class PostDetailView(APIView):
+#     permission_classes = [AllowAny]
+#     medi_name = ''
+#     # 이미지 post
+#     def post(self, request, *args, **kwargs):
+#         self.medi_name = AI_filter(request.FILES['image'])
+#         if self.medi_name != '':
+#             return Response({'message':'find success'}, status=status.HTTP_200_OK)
+#         else:
+#             raise Http404
 
-    # 사진을 받고, 그 사진을 AI에 돌려서 결과를 받고, 그 약에 대한 post 객체가 있으면 그 객체를 반환
-    # 만약없다면 post 객체를 만든 후 객체를 반환
-    def get(self, request, *args, **kwargs):
-        # ai works to get medi 
-        try:
-            serializer = PostDetailSerializer(Post.objects.get(id=self.medi_name))
-        except Post.DoesNotExist:
-            # dict 형태의 medi
-            medi = medi_selenium(self.medi_name)
-            serializer = PostDetailSerializer(Post.objects.create(
-                name = medi['name'],
-                image = medi['image'],
-                medi_info = medi['medi_info'],
-                url = medi['url'],
-            ))
-            serializer.save()
-        return Response(serializer.data)
+#     # 사진을 받고, 그 사진을 AI에 돌려서 결과를 받고, 그 약에 대한 post 객체가 있으면 그 객체를 반환
+#     # 만약없다면 post 객체를 만든 후 객체를 반환
+#     def get(self, request, *args, **kwargs):
+#         # ai works to get medi 
+#         try:
+#             serializer = PostDetailSerializer(Post.objects.get(id=self.medi_name))
+#         except Post.DoesNotExist:
+#             # dict 형태의 medi
+#             medi = medi_selenium(self.medi_name)
+#             serializer = PostDetailSerializer(Post.objects.create(
+#                 name = medi['name'],
+#                 image = medi['image'],
+#                 medi_info = medi['medi_info'],
+#                 url = medi['url'],
+#             ))
+#             serializer.save()
+#         return Response(serializer.data)
 
-
+class MediViewSet(ModelViewSet):
+    serializer_class = MedicineSerializer
+    queryset = Medicine.objects.all()
 
 class ScarpView(ModelViewSet):
     serializer_class = ScrapSerializer
     queryset = Scrap.objects.all()
     # permission_classes = [IsAuthenticated]
 
-
-class ScrapPostView(generics.ListAPIView):
+# 유저가 즐겨찾기한 약물들을 받아오는 리스트 뷰
+class MediScrapView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    # serializer_class = ScrapPostListSerializer
+    serializer_class = MediScrapListSerializer
     
     # 회원이 scrap한 Scrap모델들을 받아오는 queryset
     def get_queryset(self):
         return Scrap.objects.filter(user = self.request.user)
-    
+
+class ScrapCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    pass

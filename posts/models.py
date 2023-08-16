@@ -4,31 +4,38 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class Post(models.Model):
-    name = models.CharField(
-        verbose_name='약 이름',
-        max_length=30,
-        unique=True
-    )
+class Medicine(models.Model):
+    order = models.IntegerField(verbose_name='number',default=0,null=True)
+    name = models.TextField(verbose_name='medicine_name',null=True,default='')
+    classification = models.TextField(verbose_name='medi_classification',null=True,default='')
+    Ingredients_amount = models.TextField(verbose_name='Ingredients_amount',default='',null=True)
+    efficacy = models.TextField(verbose_name='efficacy',null=True)
+    infomation = models.TextField(verbose_name='infomation',default='',null=True)
+    warning = models.TextField(verbose_name='warning',null=True,default='')
+    storage = models.TextField(verbose_name='storage',null=True,default='')
+    doping = models.TextField(verbose_name='doping',null=True,default='')
+    usage = models.TextField(verbose_name='usage',null=True,default='')
 
-    image = models.URLField(
-        verbose_name='사진',
-        default="",
-    )
+    # disease = models.ForeignKey(
+    #     to = 'disease',
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    #     related_name='disease_medi',
+    #     )
     
-    medi_info = models.TextField(
-        verbose_name='약물 정보',
-    )
-
-    url = models.URLField(
-        verbose_name='약햑정보원 바로가기',
-        default="",
-    )
+    # allergy = models.ForeignKey(
+    #     to = 'allergy',
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    #     related_name='allergy_medi',
+    # )
 
 class Scrap(models.Model):
 
-    post = models.ForeignKey(
-        to='Post', 
+    medicine = models.ForeignKey(
+        to='Medicine', 
         on_delete=models.CASCADE,
         related_name='scrap',
         )
