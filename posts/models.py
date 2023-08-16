@@ -16,33 +16,24 @@ class Medicine(models.Model):
     doping = models.TextField(verbose_name='doping',null=True,default='')
     usage = models.TextField(verbose_name='usage',null=True,default='')
 
-    # disease = models.ForeignKey(
-    #     to = 'disease',
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     blank=True,
-    #     related_name='disease_medi',
-    #     )
-    
-    # allergy = models.ForeignKey(
-    #     to = 'allergy',
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     blank=True,
-    #     related_name='allergy_medi',
-    # )
 
 class Scrap(models.Model):
 
-    medicine = models.ForeignKey(
-        to='Medicine', 
-        on_delete=models.CASCADE,
-        related_name='scrap',
-        )
 
     user = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
         related_name='scrap',
+        null=True,
+        blank=True,
     )
 
+    medi_id = models.IntegerField(
+        default=0
+        )
+    
+    medi_name = models.TextField(
+        null=True,
+        blank=True,
+        default=''
+    )

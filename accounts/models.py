@@ -66,3 +66,22 @@ class Disease(models.Model):
 class Allergy(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True, related_name='allergy')
     name = models.CharField(verbose_name='allergy_name',max_length=15)
+
+
+class UserTakenMedi(models.Model):
+    user = models.ForeignKey(
+        to = User,
+        on_delete = models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
+    medi_id = models.IntegerField(
+        default=0
+    )
+
+    medi_name = models.TextField(
+        null=True,
+        blank=True,
+        default='',
+    )

@@ -3,7 +3,8 @@ from rest_framework.validators import UniqueValidator
 
 from django.contrib.auth.password_validation import validate_password
 
-from .models import User,Disease,Allergy
+from .models import User,Disease,Allergy,UserTakenMedi
+from posts.serializers import MedicineSerializer,Medicine
 
 
 class UserModelSerializer(ModelSerializer):
@@ -37,44 +38,19 @@ class UserSignupSerializer(ModelSerializer):
         user.save()
         return user
     
+class UserTakenMediSerializer(ModelSerializer):
 
+    class Meta:
+        model = UserTakenMedi
+        fields = [
+            'user','medi_name','medi_id',
+        ]
 
-
-# class MedicineSerializer(ModelSerializer):
-#     class Meta:
-#         model = medicine
-#         fields ='__all__'
-
-#     def create(self, validated_data):
-#         medi = medicine.objects.create(**validated_data)
-#         medi.user = self.context['request'].user
-#         medi.save()
-#         return medi
-
-
-
-# class DiseaseMediSerializer(ModelSerializer):
-#     medicines = SerializerMethodField()
-
-#     def get_medicines(self,obj):
-#         medi = obj.disease_medi.all()
-#         return MedicineSerializer(instance=medi, many=True).data['name']
-
-#     class Meta:
-#         model = disease
-#         fields = [
-#             'name', 'medicines'
-#             ]
-        
-# class AllergyMediSerializer(ModelSerializer):
-#     medicines = SerializerMethodField()
-
-#     def get_medicines(self,obj):
-#         medi = obj.allergy_medi.all()
-#         return MedicineSerializer(instance=medi,many=True).data['name']
-    
-#     class Meta:
-#         model = allergy 
-#         fields = [
-#             'name', 'medicines'
-#         ]
+    def create(self, validated_data):
+        id = validated_data['medi_id']
+        takenMedi = UserTakenMedi.objects.create(
+            user = self.context['request'].user,
+            medi_id = id,
+            medi_name = Medicine.objects.get(id=id).name
+        )
+        return takenMedi
