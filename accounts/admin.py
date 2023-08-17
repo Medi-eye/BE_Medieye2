@@ -1,8 +1,15 @@
 from django.contrib import admin
 
 from .models import User
+from posts.models import Scrap
 from django.contrib.auth.admin import UserAdmin  as BaseUserAdmin
 # Register your models here.
+
+class ScrapInline(admin.StackedInline):
+    model = Scrap
+    extra = 5
+    min_num = 0
+    verbose_name = '즐겨찾기'
 
 
 # class DiseaseInline(admin.StackedInline):
@@ -31,9 +38,6 @@ from django.contrib.auth.admin import UserAdmin  as BaseUserAdmin
 @admin.register(User)
 class UserModelAdmin(admin.ModelAdmin):
     list_display = ('username','phone','email','pregnancy')
-    # inlines = (DiseaseInline,MedicineInline,AllergyInline,)
+    inlines = (ScrapInline,)
     
-
-
-
 # Register your models here.
