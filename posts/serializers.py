@@ -18,9 +18,7 @@ class ScrapSerializer(ModelSerializer):
     
     class Meta:
         model = Scrap
-        fields = [
-            'user','medi_id','medi_name'
-        ]
+        fields = '__all__'
 
     def create(self, validated_data):
         id = validated_data['medi_id']

@@ -42,10 +42,7 @@ class UserTakenMediSerializer(ModelSerializer):
 
     class Meta:
         model = UserTakenMedi
-        fields = [
-            'user','medi_name','medi_id',
-        ]
-
+        fields = '__all__'
     def create(self, validated_data):
         id = validated_data['medi_id']
         takenMedi = UserTakenMedi.objects.create(
