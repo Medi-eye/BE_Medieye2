@@ -75,6 +75,13 @@ class UserTakenMedi(models.Model):
         blank=True,
     )
 
+    user_email = models.CharField(
+        verbose_name=_('user email'),
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+
     medi_id = models.IntegerField(
         default=0
     )

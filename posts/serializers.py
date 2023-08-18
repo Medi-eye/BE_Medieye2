@@ -24,6 +24,7 @@ class ScrapSerializer(ModelSerializer):
         id = validated_data['medi_id']
         scrap = Scrap.objects.create(
             user = self.context['request'].user,
+            user_email = self.context['request'].user.email,
             medi_id = id,
             medi_name = Medicine.objects.get(id=id).name
         )

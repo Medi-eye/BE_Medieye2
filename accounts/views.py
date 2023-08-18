@@ -30,4 +30,5 @@ class TakenMediViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        print(self.request.user.email)
         return super(TakenMediViewSet, self).get_queryset().filter(user = self.request.user)

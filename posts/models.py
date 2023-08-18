@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 User = get_user_model()
@@ -27,6 +29,14 @@ class Scrap(models.Model):
         null=True,
         blank=True,
     )
+
+    user_email = models.CharField(
+        verbose_name=_('user email'),
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+
 
     medi_id = models.IntegerField(
         default=0
