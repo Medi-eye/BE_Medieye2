@@ -6,6 +6,9 @@ from django.utils import timezone
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
+
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 # Create your models here.
 
 # user = get_user_model()
@@ -39,6 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(verbose_name='phone', max_length=15)
     email = models.EmailField(verbose_name='email',unique=True)
     pregnancy = models.BooleanField(verbose_name='gregnancy',default=False)
+
     
     is_staff = models.BooleanField(_("staff status"), default=False)
     is_active = models.BooleanField(_("active"), default=True)
@@ -91,3 +95,15 @@ class UserTakenMedi(models.Model):
         blank=True,
         default='',
     )
+
+class Profile(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+    nickname = models.CharField(max_length=10)
+    birth = models.CharField(max_length=11)
+    image = models.ImageField(upload_to='profile/', default='default.png')
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
